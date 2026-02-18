@@ -6,10 +6,9 @@ app.use(express.json());
 let tasks = [];
 let id = 1;
 
-app.get("/tasks", (req, res) => {
-  res.status(500).json({ error: "Internal error" });
+app.get('/tasks', (req, res) => {
+  res.json(tasks);
 });
-
 
 app.post('/tasks', (req, res) => {
   const { title } = req.body;
