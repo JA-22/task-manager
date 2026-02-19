@@ -30,7 +30,7 @@ app.put('/tasks/:id', (req, res) => {
     return res.status(404).json({ error: 'Task not found' });
   }
 
-  task.completed = true;
+  task.completed = false;
   res.json(task);
 });
 
@@ -38,6 +38,8 @@ app.delete('/tasks/:id', (req, res) => {
   tasks = tasks.filter(t => t.id != req.params.id);
   res.status(204).send();
 });
+
+
 
 module.exports = app;
 
