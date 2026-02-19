@@ -30,7 +30,7 @@ app.put('/tasks/:id', (req, res) => {
     return res.status(404).json({ error: 'Task not found' });
   }
 
-  task.completed = false;
+  task.completed = true;
   res.json(task);
 });
 
