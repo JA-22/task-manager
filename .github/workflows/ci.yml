@@ -1,47 +1,61 @@
 name: CI Pipeline
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout
       - name: Checkout código
         uses: actions/checkout@v3
 
+      # 2. Setup Node
       - name: Instalar Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # 🔹 Backend
+      # 3. Backend
       - name: Instalar backend
         run: |
           cd backend
-          rm -rf node_modules package-lock.json
-          npm install
+          npm ci
 
       - name: Test backend (Jest)
         run: |
           cd backend
           npm test
 
-      # 🔹 Frontend
+      # 4. Frontend
       - name: Instalar frontend
         run: |
           cd frontend
-          npm install
+          npm ci
 
-      # 🔹 E2E (Playwright)
-      - name: Instalar Playwright
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+      # 5. E2E (Playwright)
+      - name: Instalar dependencias E2E
         run: |
           cd e2e
           npm ci
-          npx playwright install chromium --with-deps
 
-      - name: Fix permissions
-        run: chmod -R 755 e2e/node_modules/.bin
+      - name: Instalar Playwright browsers
+        run: |
+          cd e2e
+          npx playwright install chromium
+
+      # 🔥 NO levantamos servidores manualmente
+      # Playwright lo hace con webServer
 
       - name: Run E2E tests
         run: |

@@ -1,9 +1,21 @@
 const { defineConfig } = require('@playwright/test');
 
 module.exports = defineConfig({
-  testDir: './tests',
   use: {
-    baseURL: 'http://localhost:5173', // Vite
-    headless: true, // para ver el test
+    baseURL: 'http://localhost:5173',
+    headless: true,
   },
+
+  webServer: [
+    {
+      command: 'cd ../backend && node server.js',
+      port: 3000,
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: 'cd ../frontend && npm run preview',
+      port: 5173,
+      reuseExistingServer: !process.env.CI,
+    }
+  ],
 });
