@@ -37,8 +37,11 @@ jobs:
       - name: Instalar Playwright
         run: |
           cd e2e
-          npm install
+          npm ci
           npx playwright install --with-deps
+
+      - name: Fix permissions
+        run: chmod -R 755 e2e/node_modules/.bin
 
       - name: Run E2E tests
         run: |
