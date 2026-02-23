@@ -4,6 +4,6 @@ module.exports = defineConfig({
   testDir: './tests',
   use: {
     baseURL: 'http://localhost:5173', // Vite
-    headless: false, // para ver el test
+    headless: true, // para ver el test
   },
 });
