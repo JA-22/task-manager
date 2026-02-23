@@ -1,24 +1,45 @@
 name: CI Pipeline
 
-on:
-  push:
-    branches: [ "main" ]
+on: [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: Instalar Node
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
-      - name: Install dependencies
-        run: npm install
+      # 🔹 Backend
+      - name: Instalar backend
+        run: |
+          cd backend
+          npm install
 
-      - name: Run tests
-        run: npm test
+      - name: Test backend (Jest)
+        run: |
+          cd backend
+          npm test
+
+      # 🔹 Frontend
+      - name: Instalar frontend
+        run: |
+          cd frontend
+          npm install
+
+      # 🔹 E2E (Playwright)
+      - name: Instalar Playwright
+        run: |
+          cd e2e
+          npm install
+          npx playwright install --with-deps
+
+      - name: Run E2E tests
+        run: |
+          cd e2e
+          npx playwright test
