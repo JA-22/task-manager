@@ -1,6 +1,8 @@
-const { defineConfig } = require('@playwright/test');
+import { defineConfig } from '@playwright/test';
 
-module.exports = defineConfig({
+export default defineConfig({
+  testDir: './tests',
+
   use: {
     baseURL: 'http://localhost:5173',
     headless: true,
@@ -8,14 +10,18 @@ module.exports = defineConfig({
 
   webServer: [
     {
-      command: 'cd ../backend && node server.js',
-      port: 3000,
-      reuseExistingServer: !process.env.CI,
+      command: 'npm run dev',
+      cwd: '../frontend',
+      port: 5173,
+      timeout: 120000,
+      reuseExistingServer: true,
     },
     {
-      command: 'cd ../frontend && npm run preview',
-      port: 5173,
-      reuseExistingServer: !process.env.CI,
+      command: 'node server.js',
+      cwd: '../backend',
+      port: 3000,
+      timeout: 120000,
+      reuseExistingServer: true,
     }
   ],
 });
